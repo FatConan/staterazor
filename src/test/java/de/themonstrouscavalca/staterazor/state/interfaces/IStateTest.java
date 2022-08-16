@@ -1,8 +1,6 @@
 package de.themonstrouscavalca.staterazor.state.interfaces;
 
-import de.themonstrouscavalca.staterazor.testentities.TrafficLightStateMachine;
-import de.themonstrouscavalca.staterazor.testentities.TrafficLightingEvent;
-import de.themonstrouscavalca.staterazor.testentities.TrafficLightingState;
+import de.themonstrouscavalca.staterazor.testentities.*;
 import junit.framework.TestCase;
 
 import java.util.Objects;
@@ -98,6 +96,17 @@ public class IStateTest extends TestCase{
     }
 
     public void testDynamicStateProgression(){
-
+        DynamicStateMachine dsm = DynamicStateMachine.instance();
+        dsm.onEvent(DynamicEvent.ADD, DynamicEventContext.of(DynamicStateType.A));
+        assertEquals("Dynamic state", "A", dsm.state().name());
+        assertEquals("Dynamic state inner", "START", dsm.state().state().name());
+        dsm.onEvent(DynamicEvent.PROGRESS);
+        assertEquals("Dynamic state inner", "PROGRESS", dsm.state().state().name());
+        dsm.onEvent(DynamicEvent.ADD, DynamicEventContext.of(DynamicStateType.B));
+        assertEquals("Dynamic state", "A", dsm.state().name());
+        dsm.onEvent(DynamicEvent.COMPLETE);
+        assertEquals("Dynamic state inner", "COMPLETE", dsm.state().state().name());
+        dsm.onEvent(DynamicEvent.ADD, DynamicEventContext.of(DynamicStateType.B));
+        assertEquals("Dynamic state", "B", dsm.state().name());
     }
 }

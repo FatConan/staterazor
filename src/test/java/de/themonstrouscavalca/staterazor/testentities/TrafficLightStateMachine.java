@@ -14,7 +14,7 @@ public class TrafficLightStateMachine extends DefaultStateManager<TrafficLightSt
 
     static class Builder extends AbstractDefaultStateMachineBuilder<TrafficLightStateMachine,
             Transition<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>,
-            TrafficLightingState, TrafficLightingEvent, Object> {
+            TrafficLightingState, TrafficLightingEvent, Object>{
 
         @Override
         public TrafficLightStateMachine build(){

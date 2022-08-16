@@ -18,12 +18,12 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
         DynamicStateType type = null;
         DynamicState previousState = null;
 
-        public Builder type(DynamicStateType type){
+        public DynamicState.Builder type(DynamicStateType type){
             this.type = type;
             return this;
         }
 
-        public Builder previous(DynamicState previous){
+        public DynamicState.Builder previous(DynamicState previous){
             this.previousState = previous;
             return this;
         }
@@ -34,12 +34,14 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
         }
     }
 
-    private final DynamicStateType type;
-    private final DynamicState previous;
+    private DynamicStateType type;
+    private DynamicState previous;
+    private DynamicState next;
 
     DynamicState(Builder builder){
         this.setName(builder.name);
         this.setState(builder.initialState);
+        this.setTransitions(builder.transitions);
         this.type = builder.type;
         this.previous = builder.previousState;
     }
@@ -48,12 +50,28 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
         return type;
     }
 
+    public void setType(DynamicStateType type){
+        this.type = type;
+    }
+
     public DynamicState getPrevious(){
         return previous;
     }
 
+    public void setPrevious(DynamicState previous){
+        this.previous = previous;
+    }
+
+    public DynamicState getNext(){
+        return next;
+    }
+
+    public void setNext(DynamicState next){
+        this.next = next;
+    }
+
     public static DynamicState instance(DynamicStateType type, DynamicState previous){
-        return new Builder()
+        DynamicState state = new Builder()
                 .type(type)
                 .previous(previous)
                 .name(type.name())
@@ -73,6 +91,8 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
                         (ic) -> true,
                         ChangeContext::new)
                 .build();
+        state.setMachine(state);
+        return state;
     }
 
     public static DynamicState instance(DynamicStateType type){

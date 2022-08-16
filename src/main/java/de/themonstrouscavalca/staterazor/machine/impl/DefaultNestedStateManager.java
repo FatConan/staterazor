@@ -50,6 +50,14 @@ public class DefaultNestedStateManager<
         this.transitions = transitions;
     }
 
+    public MT getMachine(){
+        return machine;
+    }
+
+    public void setMachine(MT machine){
+        this.machine = machine;
+    }
+
     @Override
     public ITransitionMap<MT, TT, ST, E, X> getTransitions(){
         return this.transitions;
@@ -65,9 +73,11 @@ public class DefaultNestedStateManager<
     }
 
     protected IMonitorChange<MT, ST, E, X> handleEvent(E event, X eventContext){
-        IMonitorChange<MS, SS, E, X> passDown = this.state().onEvent(event, eventContext);
-        if(passDown != null){
-            return null;
+        if(this.state() != null){
+            IMonitorChange<MS, SS, E, X> passDown = this.state().onEvent(event, eventContext);
+            if(passDown != null){
+                return null;
+            }
         }
 
         InitialContext<MT, ST, E, X> initialContext = this.initialContext(event, eventContext);

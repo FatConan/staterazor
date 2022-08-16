@@ -27,7 +27,6 @@ public abstract class AbstractDefaultStateMachineBuilder<M extends IStateMachine
     public String name;
     public ITransitionMap<M, T, S, E, X> transitions = new TransitionMap<>();
 
-
     public AbstractDefaultStateMachineBuilder<M, T, S, E, X>  name(String name){
         this.name = name;
         return this;

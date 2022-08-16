@@ -44,6 +44,14 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>, T extends ITr
         this.transitions = transitions;
     }
 
+    public M getMachine(){
+        return machine;
+    }
+
+    public void setMachine(M machine){
+        this.machine = machine;
+    }
+
     @Override
     public ITransitionMap<M, T, S, E, X> getTransitions(){
         return this.transitions;
