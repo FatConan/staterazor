@@ -54,7 +54,9 @@ public class IStateTest extends TestCase{
         assertEquals("Checking Names", "STOP", stop.name());
         assertEquals("Checking Names", "GO", go.name());
         assertEquals("Checking Names", stop, stopMatch);
+    }
 
+    public void testSimpleStateProgression(){
         TrafficLightStateMachine tlsm = TrafficLightStateMachine.instance();
         assertEquals("Initial traffic light state", TrafficLightingState.STOP, tlsm.state());
         tlsm.onEvent(TrafficLightingEvent.NEXT);
@@ -93,7 +95,9 @@ public class IStateTest extends TestCase{
         assertEquals("Initial traffic light state", TrafficLightingState.WARN, tlsm.state());
         tlsm.onEvent(TrafficLightingEvent.RESET);
         assertEquals("Initial traffic light state", TrafficLightingState.STOP, tlsm.state());
+    }
 
+    public void testDynamicStateProgression(){
 
     }
 }
