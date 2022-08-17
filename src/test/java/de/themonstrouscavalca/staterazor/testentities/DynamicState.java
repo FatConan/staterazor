@@ -72,7 +72,7 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
 
     public static DynamicState instance(DynamicStateType type, DynamicState previous){
         DynamicState state = new Builder()
-                .type(type)
+                .type(type)//TODO - this is a wart, how can I extend the builder without losing the modifications as it's passed back?
                 .previous(previous)
                 .name(type.name())
                 .initialState(DynamicInternalWorkingState.START)
@@ -91,7 +91,7 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
                         (ic) -> true,
                         ChangeContext::new)
                 .build();
-        state.setMachine(state);
+        state.setMachine(state); //TODO - This is a wart, how can I remove this?
         return state;
     }
 

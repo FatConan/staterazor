@@ -123,6 +123,32 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
+                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                                .from(TransitionStates.wildcard())
+                                .to((m, e, x) -> {
+                                    DynamicState current = m.state();
+                                    DynamicState previous = current.getPrevious();
+                                    DynamicState next = current.getNext();
+
+                                    if(previous != null){
+                                        previous.setNext(next);
+                                    }
+                                    if(next != null){
+                                        next.setPrevious(previous);
+                                    }
+
+                                    current = null;
+
+                                    return previous;
+                                })
+                                .on(DynamicEvent.REMOVE)
+                                .build(),
+                        (ic) -> {
+                            DynamicState current = ic.getMachine().state();
+                            return current != null;
+                        },
+                        ChangeContext::new
+                )
                 .build();
         machine.setMachine(machine);
         return machine;

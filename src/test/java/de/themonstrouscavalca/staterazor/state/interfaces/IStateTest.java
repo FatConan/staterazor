@@ -108,5 +108,21 @@ public class IStateTest extends TestCase{
         assertEquals("Dynamic state inner", "COMPLETE", dsm.state().state().name());
         dsm.onEvent(DynamicEvent.ADD, DynamicEventContext.of(DynamicStateType.B));
         assertEquals("Dynamic state", "B", dsm.state().name());
+        dsm.onEvent(DynamicEvent.PROGRESS);
+        assertEquals("Dynamic state inner", "PROGRESS", dsm.state().state().name());
+        dsm.onEvent(DynamicEvent.COMPLETE);
+        assertEquals("Dynamic state inner", "COMPLETE", dsm.state().state().name());
+        dsm.onEvent(DynamicEvent.ADD, DynamicEventContext.of(DynamicStateType.C));
+        assertEquals("Dynamic state", "C", dsm.state().name());
+        dsm.onEvent(DynamicEvent.START);
+        assertEquals("Dynamic state", "A", dsm.state().name());
+        dsm.onEvent(DynamicEvent.END);
+        assertEquals("Dynamic state", "C", dsm.state().name());
+        dsm.onEvent(DynamicEvent.PREVIOUS);
+        assertEquals("Dynamic state", "B", dsm.state().name());
+        dsm.onEvent(DynamicEvent.REMOVE);
+        assertEquals("Dynamic state", "A", dsm.state().name());
+        dsm.onEvent(DynamicEvent.NEXT);
+        assertEquals("Dynamic state", "C", dsm.state().name());
     }
 }
