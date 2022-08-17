@@ -5,15 +5,16 @@ import de.themonstrouscavalca.staterazor.machine.abs.AbstractDefaultStateMachine
 import de.themonstrouscavalca.staterazor.machine.impl.DefaultStateManager;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.transition.impl.Transition;
+import de.themonstrouscavalca.staterazor.transition.impl.TransitionScope;
 
 public class DynamicState extends DefaultStateManager<DynamicState, //StateMachine class
-        Transition<DynamicState, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>, //Transition class
-        DynamicInternalWorkingState, DynamicEvent, DynamicEventContext> //State, Event and Event context classes
+        Transition<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>, //Transition class
+        TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext> //State, Event and Event context classes
         implements IStateMachine<DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>{
 
     static class Builder extends AbstractDefaultStateMachineBuilder<DynamicState,
-            Transition<DynamicState, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>,
-            DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>{
+            Transition<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>,
+            TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>{
 
         DynamicStateType type = null;
         DynamicState previousState = null;
@@ -76,14 +77,14 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
                 .previous(previous)
                 .name(type.name())
                 .initialState(DynamicInternalWorkingState.START)
-                .transition(new Transition.Builder<DynamicState, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>()
                             .from(DynamicInternalWorkingState.START)
                             .to(DynamicInternalWorkingState.PROGRESS)
                             .on(DynamicEvent.PROGRESS)
                             .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<DynamicState, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>()
                                 .from(DynamicInternalWorkingState.PROGRESS)
                                 .to(DynamicInternalWorkingState.COMPLETE)
                                 .on(DynamicEvent.COMPLETE)

@@ -5,16 +5,19 @@ import de.themonstrouscavalca.staterazor.machine.abs.AbstractDefaultStateMachine
 import de.themonstrouscavalca.staterazor.machine.impl.DefaultStateManager;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.transition.impl.Transition;
+import de.themonstrouscavalca.staterazor.transition.impl.TransitionScope;
 import de.themonstrouscavalca.staterazor.transition.impl.TransitionStates;
 
 public class TrafficLightStateMachine extends DefaultStateManager<TrafficLightStateMachine, //StateMachine class
-        Transition<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>, //Transition class
-        TrafficLightingState, TrafficLightingEvent, Object> //State, Event and Event context classes
+        Transition<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>, //Transition class
+        TransitionScope, TrafficLightingState, TrafficLightingEvent, Object> //State, Event and Event context classes
         implements IStateMachine<TrafficLightingState, TrafficLightingEvent, Object>{
 
     static class Builder extends AbstractDefaultStateMachineBuilder<TrafficLightStateMachine,
-            Transition<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>,
-            TrafficLightingState, TrafficLightingEvent, Object>{
+            Transition<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>,
+            TransitionScope,
+            TrafficLightingState,
+            TrafficLightingEvent, Object>{
 
         @Override
         public TrafficLightStateMachine build(){
@@ -32,49 +35,49 @@ public class TrafficLightStateMachine extends DefaultStateManager<TrafficLightSt
         return new Builder()
                 .name("Traffic Light State Machine")
                 .initialState(TrafficLightingState.STOP)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.OFF)
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.ACTIVATE)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.STOP)
                                 .to(TrafficLightingState.READY)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.READY)
                                 .to(TrafficLightingState.GO)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.GO)
                                 .to(TrafficLightingState.WARN)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.WARN)
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TransitionStates.not(TrafficLightingState.OFF))
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.RESET)
                                 .build(),
                         (ic) -> true,
                         ChangeContext::new)
-                .transition(new Transition.Builder<TrafficLightStateMachine, TrafficLightingState, TrafficLightingEvent, Object>()
+                .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TransitionStates.wildcard())
                                 .to(TrafficLightingState.OFF)
                                 .on(TrafficLightingEvent.DEACTIVATE)

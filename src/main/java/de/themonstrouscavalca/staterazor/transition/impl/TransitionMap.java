@@ -3,18 +3,16 @@ package de.themonstrouscavalca.staterazor.transition.impl;
 import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
-import de.themonstrouscavalca.staterazor.transition.interfaces.IActor;
-import de.themonstrouscavalca.staterazor.transition.interfaces.IGate;
-import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
-import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
+import de.themonstrouscavalca.staterazor.transition.interfaces.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TransitionMap<M extends IStateMachine<S, E, X>,
-        T extends ITransition<M, S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
         S extends IState, E extends IEvent, X>
-        implements ITransitionMap<M, T, S, E, X>{
+        implements ITransitionMap<M, T, C, S, E, X>{
 
     private final Map<E, List<T>> eventsToTransitionsMap = new HashMap<>();
     private final Map<T, GateAndActor<M, S, E, X>> transitionsToGatedActorMap = new HashMap<>();

@@ -10,6 +10,7 @@ import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
+import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,18 +18,19 @@ import java.util.Optional;
 public class DefaultNestedStateManager<
         MT extends IStateMachine<ST, E, X>,
         MS extends IStateMachine<SS, E, X>,
-        TT extends ITransition<MT, ST, E, X>,
-        TS extends ITransition<MS, SS, E, X>,
-        ST extends IManageStates<MS, TS, SS, E, X>,
+        TT extends ITransition<MT, CT, ST, E, X>,
+        TS extends ITransition<MS, CS, SS, E, X>,
+        ST extends IManageStates<MS, TS, CS, SS, E, X>,
         SS extends IState,
-
+        CT extends ITransitionScope,
+        CS extends ITransitionScope,
         E extends IEvent, X>
-        implements IManageStates<MT ,TT, ST, E, X>{
+        implements IManageStates<MT ,TT, CT, ST, E, X>{
 
     private MT machine;
     private String name;
     private ST state;
-    private ITransitionMap<MT, TT, ST, E, X> transitions;
+    private ITransitionMap<MT, TT, CT, ST, E, X> transitions;
 
     public String name(){
         return name;
@@ -46,7 +48,7 @@ public class DefaultNestedStateManager<
         this.state = state;
     }
 
-    public void setTransitions(ITransitionMap<MT, TT, ST, E, X> transitions){
+    public void setTransitions(ITransitionMap<MT, TT, CT, ST, E, X> transitions){
         this.transitions = transitions;
     }
 
@@ -59,7 +61,7 @@ public class DefaultNestedStateManager<
     }
 
     @Override
-    public ITransitionMap<MT, TT, ST, E, X> getTransitions(){
+    public ITransitionMap<MT, TT, CT, ST, E, X> getTransitions(){
         return this.transitions;
     }
 

@@ -11,7 +11,8 @@ import java.util.Set;
 
 public interface ITransitionMap<
         M extends IStateMachine<S, E, X>,
-        T extends ITransition<M, S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
         S extends IState, E extends IEvent, X>{
     Set<E> getDefinedEvents();
     GateAndActor<M, S, E, X> get(T transition);

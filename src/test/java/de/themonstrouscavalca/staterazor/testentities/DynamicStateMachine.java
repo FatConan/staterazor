@@ -5,22 +5,25 @@ import de.themonstrouscavalca.staterazor.machine.abs.AbstractDefaultStateMachine
 import de.themonstrouscavalca.staterazor.machine.impl.DefaultNestedStateManager;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.transition.impl.Transition;
+import de.themonstrouscavalca.staterazor.transition.impl.TransitionScope;
 import de.themonstrouscavalca.staterazor.transition.impl.TransitionStates;
 import javafx.animation.TransitionBuilder;
 
 public class DynamicStateMachine extends DefaultNestedStateManager<
         DynamicStateMachine, //StateMachine class
         DynamicState,
-        Transition<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>,
-        Transition<DynamicState, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>,
+        Transition<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>,
+        Transition<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>,
         DynamicState,
         DynamicInternalWorkingState,
+        TransitionScope,
+        TransitionScope,
         DynamicEvent, DynamicEventContext> //State, Event and Event context classes
         implements IStateMachine<DynamicState, DynamicEvent, DynamicEventContext>{
 
     static class Builder extends AbstractDefaultStateMachineBuilder<DynamicStateMachine,
-            Transition<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>,
-            DynamicState, DynamicEvent, DynamicEventContext>{
+            Transition<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>,
+            TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>{
 
         DynamicStateType type = null;
         DynamicState previousState = null;
@@ -41,7 +44,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
         DynamicStateMachine machine = new Builder()
                 .name("Dynamic Builder")
                 .initialState(null)
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                         .from(TransitionStates.wildcard())
                         .to((m, e, x) -> {
                             DynamicState current = m.state();
@@ -61,7 +64,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                         .from(TransitionStates.wildcard())
                         .to((m, e, x) -> {
                             DynamicState current = m.state();
@@ -75,7 +78,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
                                 .to((m, e, x) -> {
                                     DynamicState current = m.state();
@@ -89,7 +92,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
                                 .to((m, e, x) -> {
                                     DynamicState current = m.state();
@@ -106,7 +109,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
                                 .to((m, e, x) -> {
                                     DynamicState current = m.state();
@@ -123,7 +126,7 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         },
                         ChangeContext::new
                 )
-                .transition(new Transition.Builder<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext>()
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
                                 .to((m, e, x) -> {
                                     DynamicState current = m.state();

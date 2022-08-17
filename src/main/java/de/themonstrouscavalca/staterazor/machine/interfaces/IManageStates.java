@@ -5,6 +5,7 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
+import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
 /**
  * The IManageStatea
@@ -14,10 +15,13 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
  * @param <E>
  * @param <X>
  */
-public interface IManageStates<M extends IStateMachine<S, E, X>, T extends ITransition<M, S, E, X>, S extends IState, E extends IEvent, X> extends IState{
+public interface IManageStates<M extends IStateMachine<S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
+        S extends IState, E extends IEvent, X> extends IState{
     S state();
     void setState(S state);
     IMonitorChange<M, S, E, X> onEvent(E event, X eventContext);
     IMonitorChange<M, S, E, X> onEvent(E event);
-    ITransitionMap<M, T, S, E, X> getTransitions();
+    ITransitionMap<M, T, C, S, E, X> getTransitions();
 }

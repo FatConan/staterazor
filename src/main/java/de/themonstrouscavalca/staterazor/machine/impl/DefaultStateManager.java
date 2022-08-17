@@ -7,22 +7,24 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IManageStates;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
-import de.themonstrouscavalca.staterazor.transition.impl.Transition;
-import de.themonstrouscavalca.staterazor.transition.impl.TransitionMap;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
+import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
 import java.util.List;
 import java.util.Optional;
 
-public class DefaultStateManager<M extends IStateMachine<S, E, X>, T extends ITransition<M, S, E, X>, S extends IState, E extends IEvent, X>
-    implements IManageStates<M ,T, S, E, X>{
+public class DefaultStateManager<M extends IStateMachine<S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
+        S extends IState, E extends IEvent, X>
+    implements IManageStates<M ,T, C, S, E, X>{
 
     private M machine;
     private String name;
     private S state;
-    private ITransitionMap<M, T, S, E, X> transitions;
+    private ITransitionMap<M, T, C, S, E, X> transitions;
 
     public String name(){
         return name;
@@ -40,7 +42,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>, T extends ITr
         this.state = state;
     }
 
-    public void setTransitions(ITransitionMap<M, T, S, E, X> transitions){
+    public void setTransitions(ITransitionMap<M, T, C, S, E, X> transitions){
         this.transitions = transitions;
     }
 
@@ -53,7 +55,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>, T extends ITr
     }
 
     @Override
-    public ITransitionMap<M, T, S, E, X> getTransitions(){
+    public ITransitionMap<M, T, C, S, E, X> getTransitions(){
         return this.transitions;
     }
 

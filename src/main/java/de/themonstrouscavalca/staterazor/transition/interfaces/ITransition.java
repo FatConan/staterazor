@@ -8,7 +8,11 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 /**
  * Representing a transition within a StateMachine between States
  */
-public interface ITransition<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>{
+public interface ITransition<
+        M extends IStateMachine<S, E, X>,
+        C extends ITransitionScope,
+        S extends IState,
+        E extends IEvent, X>{
     String name();
     boolean isInternal();
     boolean isExternal();
@@ -18,6 +22,8 @@ public interface ITransition<M extends IStateMachine<S, E, X>, S extends IState,
     boolean singleOrigin();
 
     boolean matchesFromState(S state);
+
+    C getScope();
 
     S getFromState();
     ITransitionStates<S> getFromStates();

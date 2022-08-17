@@ -5,11 +5,16 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IGenerateState;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
+import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionStates;
 
 import java.util.Objects;
 
-public class Transition<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X> implements ITransition<M, S, E, X>{
+public class Transition<
+        M extends IStateMachine<S, E, X>,
+        C extends ITransitionScope,
+        S extends IState,
+        E extends IEvent, X> implements ITransition<M, C, S, E, X>{
     private static final String FROM_STATES_ERROR = "This transition has been configured to use complex from states, use getFromStates()";
     private static final String FROM_STATE_ERROR = "This transition has been configured to use a simple from state, use getFromState()";
     private static final String STATE_GENERATOR_ERROR = "This transition has been configured to use a dynamic to state generator, use getToState(event, context, eventContext)";
@@ -19,12 +24,17 @@ public class Transition<M extends IStateMachine<S, E, X>, S extends IState, E ex
     private final boolean dynamic;
     private final boolean multipleOrigin;
     private final TransitionStates<S> fromStates;
+    private final C scope;
     private final S fromState;
     private final IGenerateState<M, S, E, X> toStateGenerator;
     private final S toState;
     private final E event;
 
-    public static class Builder<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>{
+    public static class Builder<
+            M extends IStateMachine<S, E, X>,
+            C extends ITransitionScope,
+            S extends IState,
+            E extends IEvent, X>{
         private String name = "";
 
         private boolean internal = false;
@@ -37,38 +47,44 @@ public class Transition<M extends IStateMachine<S, E, X>, S extends IState, E ex
         private IGenerateState<M, S, E, X> toStateGenerator;
         private S toState;
 
+        private C scope;
         private E event;
         private boolean privileged = false;
 
-        public Builder<M, S, E, X> from(TransitionStates<S> fromStates){
+        public Builder<M, C, S, E, X> scope(C scope){
+            this.scope = scope;
+            return this;
+        }
+
+        public Builder<M, C, S, E, X> from(TransitionStates<S> fromStates){
             this.multipleOrigin = true;
             this.fromStates = fromStates;
             return this;
         }
-        public Builder<M, S, E, X> from(S fromState){
+        public Builder<M, C, S, E, X> from(S fromState){
             this.fromState = fromState;
             return this;
         }
-        public Builder<M, S, E, X> to(S toState){
+        public Builder<M, C, S, E, X> to(S toState){
             this.toState = toState;
             return this;
         }
-        public Builder<M, S, E, X> to(IGenerateState<M, S, E, X> toStateGenerator){
+        public Builder<M, C, S, E, X> to(IGenerateState<M, S, E, X> toStateGenerator){
             this.dynamic = true;
             this.toStateGenerator = toStateGenerator;
             return this;
         }
-        public Builder<M, S, E, X> internal(TransitionStates<S> fromStates){
+        public Builder<M, C, S, E, X> internal(TransitionStates<S> fromStates){
             return this.from(fromStates);
         }
-        public Builder<M, S, E, X> internal(S fromState){
+        public Builder<M, C, S, E, X> internal(S fromState){
             return this.from(fromState);
         }
-        public Builder<M, S, E, X> name(String name){
+        public Builder<M, C, S, E, X> name(String name){
             this.name = name;
             return this;
         }
-        public Builder<M, S, E, X> on(E onEvent){
+        public Builder<M, C, S, E, X> on(E onEvent){
             this.event = onEvent;
             return this;
         }
@@ -80,13 +96,14 @@ public class Transition<M extends IStateMachine<S, E, X>, S extends IState, E ex
                     || this.fromStates != null && (this.toState == null && this.toStateGenerator == null);
         }
 
-        public Transition<M, S, E, X> build(){
+        public Transition<M, C, S, E, X> build(){
             return new Transition<>(this);
         }
     }
 
-    public Transition(Builder<M, S, E, X> builder){
+    public Transition(Builder<M, C, S, E, X> builder){
         this.name = builder.name;
+        this.scope = builder.scope;
         this.multipleOrigin = builder.multipleOrigin;
         this.dynamic = builder.dynamic;
         this.internal = builder.isInternal();
@@ -136,6 +153,11 @@ public class Transition<M extends IStateMachine<S, E, X>, S extends IState, E ex
     @Override
     public boolean matchesFromState(S state){
         return this.multipleOrigin() ? this.getFromStates().matches(state) : Objects.equals(this.getFromState(), state);
+    }
+
+    @Override
+    public C getScope(){
+        return this.scope;
     }
 
     @Override
