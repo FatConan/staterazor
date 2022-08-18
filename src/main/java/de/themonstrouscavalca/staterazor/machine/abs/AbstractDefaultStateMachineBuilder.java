@@ -37,8 +37,8 @@ public abstract class AbstractDefaultStateMachineBuilder<M extends IStateMachine
     }
 
     public AbstractDefaultStateMachineBuilder<M, T, C, S, E, X> transition(T transition,
-                                                                        IGate<M, S, E, X> gate,
-                                                                        IActor<M, S, E, X> actor){
+                                                                        IGate<M,T,C,S,E,X> gate,
+                                                                        IActor<M,T,C,S,E,X> actor){
         this.transitions.add(transition, gate, actor);
         return this;
     }

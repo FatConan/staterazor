@@ -40,50 +40,50 @@ public class TrafficLightStateMachine extends DefaultStateManager<TrafficLightSt
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.ACTIVATE)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.STOP)
                                 .to(TrafficLightingState.READY)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.READY)
                                 .to(TrafficLightingState.GO)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.GO)
                                 .to(TrafficLightingState.WARN)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TrafficLightingState.WARN)
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.NEXT)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TransitionStates.not(TrafficLightingState.OFF))
                                 .to(TrafficLightingState.STOP)
                                 .on(TrafficLightingEvent.RESET)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .transition(new Transition.Builder<TrafficLightStateMachine, TransitionScope, TrafficLightingState, TrafficLightingEvent, Object>()
                                 .from(TransitionStates.wildcard())
                                 .to(TrafficLightingState.OFF)
                                 .on(TrafficLightingEvent.DEACTIVATE)
                                 .build(),
-                        (ic) -> true,
-                        ChangeContext::new)
+                        (t, ic) -> true,
+                        (t, s, ic) -> new ChangeContext<>(s, ic))
                 .build();
 
     }

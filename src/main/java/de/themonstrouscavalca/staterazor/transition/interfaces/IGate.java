@@ -14,6 +14,9 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
  * @param <X> The vent context class
  */
 @FunctionalInterface
-public interface IGate<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>{
-    boolean permit(IInitialContext<M, S, E, X> initialContext);
+public interface IGate<M extends IStateMachine<S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
+        S extends IState, E extends IEvent, X>{
+    boolean permit(T transition, IInitialContext<M, S, E, X> initialContext);
 }

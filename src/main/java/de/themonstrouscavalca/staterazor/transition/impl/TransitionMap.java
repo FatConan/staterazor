@@ -12,10 +12,10 @@ public class TransitionMap<M extends IStateMachine<S, E, X>,
         T extends ITransition<M, C, S, E, X>,
         C extends ITransitionScope,
         S extends IState, E extends IEvent, X>
-        implements ITransitionMap<M, T, C, S, E, X>{
+        implements ITransitionMap<M,T,C,S,E,X>{
 
     private final Map<E, List<T>> eventsToTransitionsMap = new HashMap<>();
-    private final Map<T, GateAndActor<M, S, E, X>> transitionsToGatedActorMap = new HashMap<>();
+    private final Map<T, GateAndActor<M,T,C,S,E,X>> transitionsToGatedActorMap = new HashMap<>();
 
     @Override
     public Set<E> getDefinedEvents(){
@@ -23,7 +23,7 @@ public class TransitionMap<M extends IStateMachine<S, E, X>,
     }
 
     @Override
-    public GateAndActor<M, S, E, X> get(T transition){
+    public GateAndActor<M,T,C,S,E,X> get(T transition){
         return this.transitionsToGatedActorMap.getOrDefault(transition, null);
     }
 
@@ -41,12 +41,12 @@ public class TransitionMap<M extends IStateMachine<S, E, X>,
         }
     }
 
-    private void addByTransition(T transition, IGate<M, S, E, X> gate, IActor<M, S, E, X> actor){
+    private void addByTransition(T transition, IGate<M,T,C,S,E,X> gate, IActor<M,T,C,S,E,X> actor){
         this.transitionsToGatedActorMap.put(transition, new GateAndActor<>(gate, actor));
     }
 
     @Override
-    public void add(T transition, IGate<M, S, E, X> gate, IActor<M, S, E, X> actor){
+    public void add(T transition, IGate<M,T,C,S,E,X> gate, IActor<M,T,C,S,E,X> actor){
         this.addByEvent(transition.getEvent(), transition);
         this.addByTransition(transition, gate, actor);
     }

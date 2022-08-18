@@ -21,7 +21,7 @@ public interface IManageStates<M extends IStateMachine<S, E, X>,
         S extends IState, E extends IEvent, X> extends IState{
     S state();
     void setState(S state);
-    IMonitorChange<M, S, E, X> onEvent(E event, X eventContext);
-    IMonitorChange<M, S, E, X> onEvent(E event);
+    IMonitorChange<M, T, C, S, E, X> onEvent(E event, X eventContext);
+    IMonitorChange<M, T, C, S, E, X> onEvent(E event);
     ITransitionMap<M, T, C, S, E, X> getTransitions();
 }

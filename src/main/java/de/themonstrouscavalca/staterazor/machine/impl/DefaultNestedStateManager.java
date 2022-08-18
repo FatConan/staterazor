@@ -6,6 +6,7 @@ import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IManageStates;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
+import de.themonstrouscavalca.staterazor.transition.impl.ChangeMonitor;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
@@ -74,11 +75,13 @@ public class DefaultNestedStateManager<
         return initialContext;
     }
 
-    protected IMonitorChange<MT, ST, E, X> handleEvent(E event, X eventContext){
+    protected IMonitorChange<MT, TT, CT, ST, E, X> handleEvent(E event, X eventContext){
         if(this.state() != null){
-            IMonitorChange<MS, SS, E, X> passDown = this.state().onEvent(event, eventContext);
-            if(passDown != null){
-                return null;
+            IMonitorChange<MS, TS, CS, SS, E, X> passDown = this.state().onEvent(event, eventContext);
+            //If our result is not null and not empty we don't do any further transitions
+            if(passDown != null && !passDown.isEmpty()){
+                //TODO - What is the correct thing to do here? We could wrap it somehow?
+                return ChangeMonitor.empty();
             }
         }
 
@@ -89,23 +92,25 @@ public class DefaultNestedStateManager<
 
         Optional<TT> selectedOpt =
                 selected.stream().filter(t -> this.getTransitions()
-                                .get(t).gate().permit(initialContext))
+                                .get(t).gate().permit(t, initialContext))
                         .findFirst();
 
         if(selectedOpt.isPresent()){
-            GateAndActor<MT, ST, E, X> gateAndActor = this.getTransitions().get(selectedOpt.get());
+            TT transition = selectedOpt.get();
+            GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.getTransitions().get(transition);
             this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
-            IChangeContext<MT, ST, E, X> changeContext = gateAndActor.getActor().act(initialContext.getFromState(), initialContext);
+            IChangeContext<MT, ST, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
+            return ChangeMonitor.of(transition, changeContext);
         }
 
-        return null;
+        return ChangeMonitor.empty();
     }
 
-    public IMonitorChange<MT, ST, E, X> onEvent(E event, X eventContext){
+    public IMonitorChange<MT, TT, CT, ST, E, X> onEvent(E event, X eventContext){
         return this.handleEvent(event, eventContext);
     }
 
-    public IMonitorChange<MT, ST, E, X> onEvent(E event){
+    public IMonitorChange<MT, TT, CT, ST, E, X> onEvent(E event){
         return this.onEvent(event, null);
     }
 }

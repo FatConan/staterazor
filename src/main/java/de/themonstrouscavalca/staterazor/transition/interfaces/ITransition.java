@@ -13,6 +13,7 @@ public interface ITransition<
         C extends ITransitionScope,
         S extends IState,
         E extends IEvent, X>{
+
     String name();
     boolean isInternal();
     boolean isExternal();

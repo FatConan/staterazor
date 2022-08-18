@@ -7,7 +7,6 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.transition.impl.Transition;
 import de.themonstrouscavalca.staterazor.transition.impl.TransitionScope;
 import de.themonstrouscavalca.staterazor.transition.impl.TransitionStates;
-import javafx.animation.TransitionBuilder;
 
 public class DynamicStateMachine extends DefaultNestedStateManager<
         DynamicStateMachine, //StateMachine class
@@ -56,13 +55,13 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         })
                         .on(DynamicEvent.ADD)
                         .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicEventContext context = ic.getEventContext();
                             DynamicState current = ic.getMachine().state();
                             return context.getStateType() != null &&
                                     (current == null || current.state().equals(DynamicInternalWorkingState.COMPLETE));
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                         .from(TransitionStates.wildcard())
@@ -72,11 +71,11 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         })
                         .on(DynamicEvent.PREVIOUS)
                         .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null && current.getPrevious() != null;
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
@@ -86,11 +85,11 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                                 })
                                 .on(DynamicEvent.NEXT)
                                 .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null && current.getNext() != null;
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
@@ -103,11 +102,11 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                                 })
                                 .on(DynamicEvent.START)
                                 .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null;
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
@@ -120,11 +119,11 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                                 })
                                 .on(DynamicEvent.END)
                                 .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null;
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
                                 .from(TransitionStates.wildcard())
@@ -146,11 +145,11 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                                 })
                                 .on(DynamicEvent.REMOVE)
                                 .build(),
-                        (ic) -> {
+                        (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null;
                         },
-                        ChangeContext::new
+                        (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .build();
         machine.setMachine(machine);

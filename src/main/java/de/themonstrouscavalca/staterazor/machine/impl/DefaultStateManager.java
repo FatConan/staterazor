@@ -6,6 +6,7 @@ import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IManageStates;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
+import de.themonstrouscavalca.staterazor.transition.impl.ChangeMonitor;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
@@ -68,7 +69,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
         return initialContext;
     }
 
-    protected IMonitorChange<M, S, E, X> handleEvent(E event, X eventContext){
+    protected IMonitorChange<M, T, C, S, E, X> handleEvent(E event, X eventContext){
         InitialContext<M, S, E, X> initialContext = this.initialContext(event, eventContext);
 
         List<T> selected = this.getTransitions()
@@ -76,23 +77,27 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
 
         Optional<T> selectedOpt =
                 selected.stream().filter(t -> this.getTransitions()
-                                .get(t).gate().permit(initialContext))
+                                .get(t).gate().permit(t, initialContext))
                         .findFirst();
 
         if(selectedOpt.isPresent()){
-            GateAndActor<M, S, E, X> gateAndActor = this.getTransitions().get(selectedOpt.get());
+            T transition = selectedOpt.get();
+            GateAndActor<M,T,C,S,E,X> gateAndActor = this.getTransitions().get(transition);
             this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
-            IChangeContext<M, S,E, X> changeContext = gateAndActor.getActor().act(initialContext.getFromState(), initialContext);
+            IChangeContext<M, S, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
+            IMonitorChange<M, T, C, S, E, X> monitor = ChangeMonitor.of(selectedOpt.get(), changeContext);
+            return monitor;
         }
 
-        return null;
+        IMonitorChange<M, T, C, S, E, X> monitor = ChangeMonitor.empty();
+        return monitor;
     }
 
-    public IMonitorChange<M, S, E, X> onEvent(E event, X eventContext){
+    public IMonitorChange<M, T, C, S, E, X> onEvent(E event, X eventContext){
         return this.handleEvent(event, eventContext);
     }
 
-    public IMonitorChange<M, S, E, X> onEvent(E event){
+    public IMonitorChange<M, T, C, S, E, X> onEvent(E event){
         return this.onEvent(event, null);
     }
 }

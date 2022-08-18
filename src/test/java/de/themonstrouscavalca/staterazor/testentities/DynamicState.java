@@ -82,14 +82,14 @@ public class DynamicState extends DefaultStateManager<DynamicState, //StateMachi
                             .to(DynamicInternalWorkingState.PROGRESS)
                             .on(DynamicEvent.PROGRESS)
                             .build(),
-                        (ic) -> true,
+                        (t, ic) -> true,
                         ChangeContext::new)
                 .transition(new Transition.Builder<DynamicState, TransitionScope, DynamicInternalWorkingState, DynamicEvent, DynamicEventContext>()
                                 .from(DynamicInternalWorkingState.PROGRESS)
                                 .to(DynamicInternalWorkingState.COMPLETE)
                                 .on(DynamicEvent.COMPLETE)
                                 .build(),
-                        (ic) -> true,
+                        (t, ic) -> true,
                         ChangeContext::new)
                 .build();
         state.setMachine(state); //TODO - This is a wart, how can I remove this?

@@ -1,6 +1,7 @@
 package de.themonstrouscavalca.staterazor.transition.interfaces;
 
 import de.themonstrouscavalca.staterazor.context.impl.ChangeContext;
+import de.themonstrouscavalca.staterazor.context.interfaces.IChangeContext;
 import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
@@ -15,9 +16,14 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
  * @param <E> The event class
  * @param <X> The event context class
  */
-public interface IMonitorChange<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>{
+public interface IMonitorChange<M extends IStateMachine<S, E, X>,
+        T extends ITransition<M, C, S, E, X>,
+        C extends ITransitionScope,
+        S extends IState, E extends IEvent, X>{
     boolean transitionFound();
     boolean transitionPermitted();
     boolean transitionSuccessful();
-    ChangeContext<M, S, E, X> getChangeContext();
+    T getTransition();
+    IChangeContext<M, S, E, X> getChangeContext();
+    boolean isEmpty();
 }
