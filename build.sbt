@@ -1,4 +1,4 @@
-name := "states-redux"
+name := "staterazor"
 organization := "de.themonstrouscavalca"
 // maintainer := "oss@themonstrouscavalca.de"
 version := "2022.8.1-SNAPSHOT"

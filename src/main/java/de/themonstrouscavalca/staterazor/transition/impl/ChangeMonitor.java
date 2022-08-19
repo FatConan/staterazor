@@ -1,6 +1,5 @@
 package de.themonstrouscavalca.staterazor.transition.impl;
 
-import de.themonstrouscavalca.staterazor.context.impl.ChangeContext;
 import de.themonstrouscavalca.staterazor.context.interfaces.IChangeContext;
 import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
@@ -8,8 +7,6 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
-
-import java.util.Arrays;
 
 public class ChangeMonitor<M extends IStateMachine<S, E, X>,
         T extends ITransition<M, C, S, E, X>,
