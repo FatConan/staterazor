@@ -10,5 +10,6 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 public interface ITransitionStates<S extends IState>{
     boolean isWildcard();
     boolean isInverse();
+    boolean isDummy();
     boolean matches(S state);
 }

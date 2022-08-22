@@ -10,5 +10,6 @@ public enum DynamicEvent implements IEvent{
     START,
     END,
     PROGRESS,
-    COMPLETE
+    COMPLETE,
+    NO_OP
 }

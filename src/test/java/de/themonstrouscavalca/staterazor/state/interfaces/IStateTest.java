@@ -122,7 +122,14 @@ public class IStateTest extends TestCase{
         assertEquals("Dynamic state", "B", dsm.state().name());
         dsm.onEvent(DynamicEvent.REMOVE);
         assertEquals("Dynamic state", "A", dsm.state().name());
+        assertEquals("Dynamic state no-op", false, dsm.isNoOpRegistered());
+        dsm.onEvent(DynamicEvent.NO_OP);
+        assertEquals("Dynamic state no-op", false, dsm.isNoOpRegistered());
         dsm.onEvent(DynamicEvent.NEXT);
         assertEquals("Dynamic state", "C", dsm.state().name());
+        assertEquals("Dynamic state no-op", false, dsm.isNoOpRegistered());
+        dsm.onEvent(DynamicEvent.NO_OP);
+        assertEquals("Dynamic state no-op", true, dsm.isNoOpRegistered());
+
     }
 }

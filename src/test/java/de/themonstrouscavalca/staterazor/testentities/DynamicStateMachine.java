@@ -33,6 +33,16 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
         }
     }
 
+    private boolean noOpRegistered = false;
+
+    public boolean isNoOpRegistered(){
+        return noOpRegistered;
+    }
+
+    public void setNoOpRegistered(boolean noOpRegistered){
+        this.noOpRegistered = noOpRegistered;
+    }
+
     DynamicStateMachine(Builder builder){
         this.setName(builder.name);
         this.setState(builder.initialState);
@@ -44,17 +54,17 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                 .name("Dynamic Builder")
                 .initialState(null)
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
-                        .from(TransitionStates.wildcard())
-                        .to((m, e, x) -> {
-                            DynamicState current = m.state();
-                            DynamicState added = DynamicState.instance(x.getStateType(), current);
-                            if(current != null){
-                                current.setNext(added);
-                            }
-                            return added;
-                        })
-                        .on(DynamicEvent.ADD)
-                        .build(),
+                                .from(TransitionStates.wildcard())
+                                .to((m, e, x) -> {
+                                    DynamicState current = m.state();
+                                    DynamicState added = DynamicState.instance(x.getStateType(), current);
+                                    if(current != null){
+                                        current.setNext(added);
+                                    }
+                                    return added;
+                                })
+                                .on(DynamicEvent.ADD)
+                                .build(),
                         (t, ic) -> {
                             DynamicEventContext context = ic.getEventContext();
                             DynamicState current = ic.getMachine().state();
@@ -64,13 +74,13 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                         (t, s, ic) -> new ChangeContext<>(s, ic)
                 )
                 .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
-                        .from(TransitionStates.wildcard())
-                        .to((m, e, x) -> {
-                            DynamicState current = m.state();
-                            return current.getPrevious();
-                        })
-                        .on(DynamicEvent.PREVIOUS)
-                        .build(),
+                                .from(TransitionStates.wildcard())
+                                .to((m, e, x) -> {
+                                    DynamicState current = m.state();
+                                    return current.getPrevious();
+                                })
+                                .on(DynamicEvent.PREVIOUS)
+                                .build(),
                         (t, ic) -> {
                             DynamicState current = ic.getMachine().state();
                             return current != null && current.getPrevious() != null;
@@ -150,6 +160,17 @@ public class DynamicStateMachine extends DefaultNestedStateManager<
                             return current != null;
                         },
                         (t, s, ic) -> new ChangeContext<>(s, ic)
+                )
+                .transition(new Transition.Builder<DynamicStateMachine, TransitionScope, DynamicState, DynamicEvent, DynamicEventContext>()
+                                .internal(TransitionStates.of("C"))
+                                .on(DynamicEvent.NO_OP)
+                                .build(),
+                        (t, ic) -> true,
+                        (t, s, ic) -> {
+                            ChangeContext<DynamicStateMachine, DynamicState, DynamicEvent, DynamicEventContext> context = new ChangeContext<>(s, ic);
+                            ic.getMachine().setNoOpRegistered(true);
+                            return context;
+                        }
                 )
                 .build();
         machine.setMachine(machine);
