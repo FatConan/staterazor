@@ -2,7 +2,7 @@ name := "staterazor"
 organization := "de.themonstrouscavalca"
 // maintainer := "oss@themonstrouscavalca.de"
 version := "2022.8.1-SNAPSHOT"
-scalaVersion := "2.12.16"
+scalaVersion := "2.13.8"
 
 
 resolvers ++= Seq(Resolver.mavenLocal,
