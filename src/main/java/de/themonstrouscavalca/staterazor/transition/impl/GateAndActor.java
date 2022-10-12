@@ -21,8 +21,12 @@ public class GateAndActor<M extends IStateMachine<S, E, X>,
     }
 
     public IGate<M,T,C,S,E,X> gate(){
+        if(gate == null){
+            return (t, ic) -> true;
+        }
         return gate;
     }
+
     public IActor<M,T,C,S,E,X> getActor(){
         return actor;
     }

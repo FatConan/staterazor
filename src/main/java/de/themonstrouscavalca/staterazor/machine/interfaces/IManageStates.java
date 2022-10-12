@@ -7,6 +7,8 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
+import java.util.List;
+
 /**
  * The IManageStatea
  * @param <M>
@@ -24,4 +26,6 @@ public interface IManageStates<M extends IStateMachine<S, E, X>,
     IMonitorChange<M, T, C, S, E, X> onEvent(E event, X eventContext);
     IMonitorChange<M, T, C, S, E, X> onEvent(E event);
     ITransitionMap<M, T, C, S, E, X> getTransitions();
+    List<T> potentialTransitions();
+    List<T> validTransitions(X eventContext);
 }

@@ -17,5 +17,6 @@ public interface ITransitionMap<
     Set<E> getDefinedEvents();
     GateAndActor<M,T,C,S,E,X> get(T transition);
     List<T> forEventAndState(E event, S state);
+    List<T> forState(S state);
     void add(T transition, IGate<M,T,C,S,E,X> gate, IActor<M,T,C,S,E,X> actor);
 }

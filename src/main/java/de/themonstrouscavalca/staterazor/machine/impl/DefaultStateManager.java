@@ -13,6 +13,7 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +59,24 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
     @Override
     public ITransitionMap<M, T, C, S, E, X> getTransitions(){
         return this.transitions;
+    }
+
+    @Override
+    public List<T> potentialTransitions(){
+        return this.transitions.forState(this.state());
+    }
+
+    @Override
+    public List<T> validTransitions(X eventContext){
+        List<T> potentialTransitions = this.transitions.forState(this.state());
+        List<T> valid = new ArrayList<>();
+        for(T transition: potentialTransitions){
+            GateAndActor<M, T, C, S, E, X> gateAndActor = this.transitions.get(transition);
+            if(gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext))){
+                valid.add(transition);
+            }
+        }
+        return valid;
     }
 
     protected InitialContext<M, S, E, X> initialContext(E event, X eventContext){

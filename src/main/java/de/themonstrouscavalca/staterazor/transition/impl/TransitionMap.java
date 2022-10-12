@@ -33,6 +33,12 @@ public class TransitionMap<M extends IStateMachine<S, E, X>,
                 .stream().filter(t -> t.matchesFromState(state)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<T> forState(S state){
+        return this.eventsToTransitionsMap.values()
+                .stream().flatMap(Collection::stream).filter(t -> t.matchesFromState(state)).collect(Collectors.toList());
+    }
+
     private void addByEvent(E event, T transition){
         if(this.eventsToTransitionsMap.containsKey(event)){
             this.eventsToTransitionsMap.get(event).add(transition);

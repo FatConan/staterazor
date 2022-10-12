@@ -13,6 +13,7 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,24 @@ public class DefaultNestedStateManager<
     @Override
     public ITransitionMap<MT, TT, CT, ST, E, X> getTransitions(){
         return this.transitions;
+    }
+
+    @Override
+    public List<TT> potentialTransitions(){
+        return this.transitions.forState(this.state());
+    }
+
+    @Override
+    public List<TT> validTransitions(X eventContext){
+        List<TT> potentialTransitions = this.transitions.forState(this.state());
+        List<TT> valid = new ArrayList<>();
+        for(TT transition: potentialTransitions){
+            GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.transitions.get(transition);
+            if(gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext))){
+                valid.add(transition);
+            }
+        }
+        return valid;
     }
 
     protected InitialContext<MT, ST, E, X> initialContext(E event, X eventContext){
