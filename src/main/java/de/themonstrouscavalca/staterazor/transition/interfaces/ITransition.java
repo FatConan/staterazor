@@ -12,7 +12,7 @@ public interface ITransition<
         M extends IStateMachine<S, E, X>,
         C extends ITransitionScope,
         S extends IState,
-        E extends IEvent, X>{
+        E extends IEvent, X> extends Comparable<ITransition<M, C, S, E, X>>{
 
     String name();
     boolean isInternal();
@@ -32,4 +32,9 @@ public interface ITransition<
     S getToState(M machine, S fromState, E event, X eventContext);
     S getToState();
     E getEvent();
+
+    @Override
+    default int compareTo(ITransition<M, C, S, E, X> o){
+        return this.name().compareTo(o.name());
+    }
 }
