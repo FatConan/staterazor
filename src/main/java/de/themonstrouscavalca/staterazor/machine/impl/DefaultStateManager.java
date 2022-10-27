@@ -15,6 +15,7 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -70,7 +71,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
     @Override
     public List<T> potentialTransitions(C scope){
         if(scope != null){
-            return this.transitions.forState(this.state()).stream().filter(t -> t.getScope().equals(scope)).collect(Collectors.toList());
+            return this.transitions.forState(this.state()).stream().filter(t -> Objects.equals(t.getScope(), scope)).collect(Collectors.toList());
         }
         return this.potentialTransitions();
     }
