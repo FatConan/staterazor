@@ -16,6 +16,7 @@ import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DefaultNestedStateManager<
         MT extends IStateMachine<ST, E, X>,
@@ -73,8 +74,14 @@ public class DefaultNestedStateManager<
     }
 
     @Override
-    public List<TT> validTransitions(X eventContext){
-        List<TT> potentialTransitions = this.transitions.forState(this.state());
+    public List<TT> potentialTransitions(CT scope){
+        if(scope != null){
+            return this.transitions.forState(this.state()).stream().filter(t -> t.getScope().equals(scope)).collect(Collectors.toList());
+        }
+        return this.potentialTransitions();
+    }
+
+    protected List<TT> validatedTransitions(List<TT> potentialTransitions, X eventContext){
         List<TT> valid = new ArrayList<>();
         for(TT transition: potentialTransitions){
             GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.transitions.get(transition);
@@ -83,6 +90,18 @@ public class DefaultNestedStateManager<
             }
         }
         return valid;
+    }
+
+    @Override
+    public List<TT> validTransitions(X eventContext){
+        List<TT> potentialTransitions = this.potentialTransitions();
+        return this.validatedTransitions(potentialTransitions, eventContext);
+    }
+
+    @Override
+    public List<TT> validTransitions(X eventContext, CT scope){
+        List<TT> potentialTransitions = this.potentialTransitions(scope);
+        return this.validatedTransitions(potentialTransitions, eventContext);
     }
 
     protected InitialContext<MT, ST, E, X> initialContext(E event, X eventContext){

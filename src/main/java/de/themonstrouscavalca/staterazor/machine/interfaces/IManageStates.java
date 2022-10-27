@@ -27,5 +27,7 @@ public interface IManageStates<M extends IStateMachine<S, E, X>,
     IMonitorChange<M, T, C, S, E, X> onEvent(E event);
     ITransitionMap<M, T, C, S, E, X> getTransitions();
     List<T> potentialTransitions();
+    List<T> potentialTransitions(C scope);
     List<T> validTransitions(X eventContext);
+    List<T> validTransitions(X eventContext, C scope);
 }

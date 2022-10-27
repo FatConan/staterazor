@@ -15,7 +15,7 @@ public class TransitionMap<M extends IStateMachine<S, E, X>,
         implements ITransitionMap<M,T,C,S,E,X>{
 
     private final Map<E, List<T>> eventsToTransitionsMap = new HashMap<>();
-    private final Map<T, GateAndActor<M,T,C,S,E,X>> transitionsToGatedActorMap = new TreeMap<>();
+    private final Map<T, GateAndActor<M,T,C,S,E,X>> transitionsToGatedActorMap = new LinkedHashMap<>();
 
     @Override
     public Set<E> getDefinedEvents(){
