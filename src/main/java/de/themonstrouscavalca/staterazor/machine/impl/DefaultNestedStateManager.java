@@ -76,10 +76,7 @@ public class DefaultNestedStateManager<
 
     @Override
     public List<TT> potentialTransitions(CT scope){
-        if(scope != null){
-            return this.transitions.forState(this.state()).stream().filter(t -> Objects.equals(t.getScope(), scope)).collect(Collectors.toList());
-        }
-        return this.potentialTransitions();
+        return this.transitions.forState(this.state()).stream().filter(t -> Objects.equals(t.getScope(), scope)).collect(Collectors.toList());
     }
 
     protected List<TT> validatedTransitions(List<TT> potentialTransitions, X eventContext){

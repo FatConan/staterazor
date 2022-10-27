@@ -70,10 +70,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
 
     @Override
     public List<T> potentialTransitions(C scope){
-        if(scope != null){
-            return this.transitions.forState(this.state()).stream().filter(t -> Objects.equals(t.getScope(), scope)).collect(Collectors.toList());
-        }
-        return this.potentialTransitions();
+        return this.transitions.forState(this.state()).stream().filter(t -> Objects.equals(t.getScope(), scope)).collect(Collectors.toList());
     }
 
     protected List<T> validateTransitions(List<T> potentialTransitions, X eventContext){
