@@ -30,4 +30,5 @@ public interface IManageStates<M extends IStateMachine<S, E, X>,
     List<T> potentialTransitions(C scope);
     List<T> validTransitions(X eventContext);
     List<T> validTransitions(X eventContext, C scope);
+    Boolean validateTransition(T transition, X eventContext);
 }

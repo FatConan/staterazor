@@ -82,12 +82,17 @@ public class DefaultNestedStateManager<
     protected List<TT> validatedTransitions(List<TT> potentialTransitions, X eventContext){
         List<TT> valid = new ArrayList<>();
         for(TT transition: potentialTransitions){
-            GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.transitions.get(transition);
-            if(gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext))){
+            if(this.validateTransition(transition, eventContext)){
                 valid.add(transition);
             }
         }
         return valid;
+    }
+
+    @Override
+    public Boolean validateTransition(TT transition, X eventContext){
+        GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.transitions.get(transition);
+        return (gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext)));
     }
 
     @Override

@@ -76,12 +76,17 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
     protected List<T> validateTransitions(List<T> potentialTransitions, X eventContext){
         List<T> valid = new ArrayList<>();
         for(T transition: potentialTransitions){
-            GateAndActor<M, T, C, S, E, X> gateAndActor = this.transitions.get(transition);
-            if(gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext))){
+            if(this.validateTransition(transition, eventContext)){
                 valid.add(transition);
             }
         }
         return valid;
+    }
+
+    @Override
+    public Boolean validateTransition(T transition, X eventContext){
+        GateAndActor<M, T, C, S, E, X> gateAndActor = this.transitions.get(transition);
+        return (gateAndActor != null && gateAndActor.gate().permit(transition, this.initialContext(transition.getEvent(), eventContext)));
     }
 
     @Override
