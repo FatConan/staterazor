@@ -124,8 +124,13 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
         if(selectedOpt.isPresent()){
             T transition = selectedOpt.get();
             GateAndActor<M,T,C,S,E,X> gateAndActor = this.getTransitions().get(transition);
-            this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
-            IChangeContext<M, S, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
+            S solidifiedFromState = initialContext.getFromState();
+            S solidifiedToState = selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext);
+
+            this.setState(solidifiedToState);
+            IChangeContext<M, S, E, X> changeContext = gateAndActor.getActor().act(transition, solidifiedToState, initialContext);
+            changeContext.setFromState(solidifiedFromState);
+            changeContext.setToState(solidifiedToState);
             IMonitorChange<M, T, C, S, E, X> monitor = ChangeMonitor.transitioned(selectedOpt.get(), changeContext);
             return monitor;
         }

@@ -139,8 +139,13 @@ public class DefaultNestedStateManager<
         if(selectedOpt.isPresent()){
             TT transition = selectedOpt.get();
             GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.getTransitions().get(transition);
-            this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
-            IChangeContext<MT, ST, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
+            ST solidifiedFromState = initialContext.getFromState();
+            ST solidifiedToState = selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext);
+
+            this.setState(solidifiedToState);
+            IChangeContext<MT, ST, E, X> changeContext = gateAndActor.getActor().act(transition, solidifiedToState, initialContext);
+            changeContext.setFromState(solidifiedFromState);
+            changeContext.setToState(solidifiedToState);
             return ChangeMonitor.transitioned(transition, changeContext);
         }
 
