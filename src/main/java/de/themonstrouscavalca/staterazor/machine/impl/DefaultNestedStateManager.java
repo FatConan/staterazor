@@ -108,7 +108,7 @@ public class DefaultNestedStateManager<
     }
 
     protected InitialContext<MT, ST, E, X> initialContext(E event, X eventContext){
-        InitialContext<MT, ST, E, X> initialContext = new InitialContext();
+        InitialContext<MT, ST, E, X> initialContext = new InitialContext<>();
         initialContext.setMachine(this.machine);
         initialContext.setFromState(this.state());
         initialContext.setEvent(event);
@@ -141,7 +141,7 @@ public class DefaultNestedStateManager<
             GateAndActor<MT, TT, CT, ST, E, X> gateAndActor = this.getTransitions().get(transition);
             this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
             IChangeContext<MT, ST, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
-            return ChangeMonitor.of(transition, changeContext);
+            return ChangeMonitor.transitioned(transition, changeContext);
         }
 
         return ChangeMonitor.empty();

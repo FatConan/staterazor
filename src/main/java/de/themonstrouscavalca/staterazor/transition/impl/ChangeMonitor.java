@@ -49,6 +49,22 @@ public class ChangeMonitor<M extends IStateMachine<S, E, X>,
         return monitor;
     }
 
+    @SuppressWarnings("varargs")
+    public static  <M extends IStateMachine<S, E, X>,
+            T extends ITransition<M, C, S, E, X>,
+            C extends ITransitionScope,
+            S extends IState, E extends IEvent, X>ChangeMonitor<M, T, C, S, E, X> transitioned(T transition, IChangeContext<M, S, E, X> context){
+        ChangeMonitor<M, T, C, S, E, X> monitor = new ChangeMonitor<>();
+        if(transition != null){
+            monitor.transition = transition;
+            monitor.transitionFound = true;
+            monitor.transitionPermitted = true;
+            monitor.transitionSuccessful = true;
+        }
+        monitor.changeContext = context;
+        return monitor;
+    }
+
     @Override
     public boolean transitionFound(){
         return transitionFound;

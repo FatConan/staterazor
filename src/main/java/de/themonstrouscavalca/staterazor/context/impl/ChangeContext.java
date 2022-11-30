@@ -19,8 +19,8 @@ public class ChangeContext<M extends IStateMachine<S, E, X>, S extends IState, E
     public ChangeContext(IInitialContext<M, S, E, X> initial){
         this.setFromState(initial.getFromState());
         this.setEvent(initial.getEvent());
-        this.setEventContext(this.getEventContext());
-        this.setMachine(this.getMachine());
+        this.setEventContext(initial.getEventContext());
+        this.setMachine(initial.getMachine());
     }
 
     public ChangeContext(S toState, IInitialContext<M, S, E, X> initial){

@@ -102,7 +102,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
     }
 
     protected InitialContext<M, S, E, X> initialContext(E event, X eventContext){
-        InitialContext<M, S, E, X> initialContext = new InitialContext();
+        InitialContext<M, S, E, X> initialContext = new InitialContext<>();
         initialContext.setMachine(this.machine);
         initialContext.setFromState(this.state());
         initialContext.setEvent(event);
@@ -126,7 +126,7 @@ public class DefaultStateManager<M extends IStateMachine<S, E, X>,
             GateAndActor<M,T,C,S,E,X> gateAndActor = this.getTransitions().get(transition);
             this.setState(selectedOpt.get().getToState(this.machine, initialContext.getFromState(), event, eventContext));
             IChangeContext<M, S, E, X> changeContext = gateAndActor.getActor().act(transition, initialContext.getFromState(), initialContext);
-            IMonitorChange<M, T, C, S, E, X> monitor = ChangeMonitor.of(selectedOpt.get(), changeContext);
+            IMonitorChange<M, T, C, S, E, X> monitor = ChangeMonitor.transitioned(selectedOpt.get(), changeContext);
             return monitor;
         }
 
