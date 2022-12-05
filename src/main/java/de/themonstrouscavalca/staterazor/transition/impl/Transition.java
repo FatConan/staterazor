@@ -15,6 +15,7 @@ public class Transition<
         C extends ITransitionScope,
         S extends IState,
         E extends IEvent, X> implements ITransition<M, C, S, E, X>{
+
     private static final String FROM_STATES_ERROR = "This transition has been configured to use complex from states, use getFromStates()";
     private static final String FROM_STATE_ERROR = "This transition has been configured to use a simple from state, use getFromState()";
     private static final String STATE_GENERATOR_ERROR = "This transition has been configured to use a dynamic to state generator, use getToState(event, context, eventContext)";
@@ -93,7 +94,7 @@ public class Transition<
             //If our to and from states match, or whe have from states but no to state or to state generator then we
             //consider ti to be an internal transition
             return ((this.fromState != null && this.toState != null ) && this.fromState == this.toState)
-                    || this.fromStates != null && (this.toState == null && this.toStateGenerator == null);
+                    || (this.fromStates != null && (this.toState == null && this.toStateGenerator == null));
         }
 
         public Transition<M, C, S, E, X> build(){

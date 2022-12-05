@@ -34,6 +34,20 @@ public class ChangeMonitor<M extends IStateMachine<S, E, X>,
         return (ChangeMonitor<M, T, C, S, E, X>) EMPTY;
     }
 
+    @SuppressWarnings("varargs")
+    public static  <M extends IStateMachine<S, E, X>,
+            T extends ITransition<M, C, S, E, X>,
+            C extends ITransitionScope,
+            S extends IState, E extends IEvent, X>ChangeMonitor<M, T, C, S, E, X> dummyTransition(IChangeContext<M, S, E, X> context){
+        ChangeMonitor<M, T, C, S, E, X> monitor = new ChangeMonitor<>();
+        monitor.transition = null;
+        monitor.transitionFound = true;
+        monitor.transitionPermitted = true;
+        monitor.transitionSuccessful = true;
+        monitor.changeContext = context;
+        return monitor;
+    }
+
 
     @SuppressWarnings("varargs")
     public static  <M extends IStateMachine<S, E, X>,

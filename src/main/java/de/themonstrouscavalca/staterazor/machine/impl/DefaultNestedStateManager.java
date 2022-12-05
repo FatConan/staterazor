@@ -1,5 +1,6 @@
 package de.themonstrouscavalca.staterazor.machine.impl;
 
+import de.themonstrouscavalca.staterazor.context.impl.ChangeContext;
 import de.themonstrouscavalca.staterazor.context.impl.InitialContext;
 import de.themonstrouscavalca.staterazor.context.interfaces.IChangeContext;
 import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
@@ -8,6 +9,7 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.impl.ChangeMonitor;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
+import de.themonstrouscavalca.staterazor.transition.impl.Transition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
@@ -122,7 +124,13 @@ public class DefaultNestedStateManager<
             //If our result is not null and not empty we don't do any further transitions
             if(passDown != null && !passDown.isEmpty()){
                 //TODO - What is the correct thing to do here? We could wrap it somehow?
-                return ChangeMonitor.empty();
+                IChangeContext<MT, ST, E, X> changeContext = new ChangeContext<>();
+                changeContext.setEvent(event);
+                changeContext.setFromState(this.state());
+                changeContext.setToState(this.state());
+                changeContext.setEventContext(eventContext);
+                changeContext.setMachine(this.getMachine());
+                return ChangeMonitor.dummyTransition(changeContext);
             }
         }
 
