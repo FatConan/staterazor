@@ -48,7 +48,6 @@ public class ChangeMonitor<M extends IStateMachine<S, E, X>,
         return monitor;
     }
 
-
     @SuppressWarnings("varargs")
     public static  <M extends IStateMachine<S, E, X>,
             T extends ITransition<M, C, S, E, X>,
@@ -108,6 +107,4 @@ public class ChangeMonitor<M extends IStateMachine<S, E, X>,
     public boolean isEmpty(){
         return this == EMPTY;
     }
-
-
 }
