@@ -9,7 +9,6 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.impl.ChangeMonitor;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
-import de.themonstrouscavalca.staterazor.transition.impl.Transition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.IMonitorChange;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionMap;
@@ -128,7 +127,7 @@ public class DefaultNestedStateManager<
                 changeContext.setEvent(event);
                 changeContext.setFromState(this.state());
                 changeContext.setToState(this.state());
-                changeContext.setEventContext(eventContext);
+                changeContext.setEventContext(passDown.getChangeContext().getEventContext());
                 changeContext.setMachine(this.getMachine());
                 return ChangeMonitor.dummyTransition(changeContext);
             }
