@@ -4,7 +4,6 @@ import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.impl.GateAndActor;
-import de.themonstrouscavalca.staterazor.transition.impl.Transition;
 
 import java.util.List;
 import java.util.Set;

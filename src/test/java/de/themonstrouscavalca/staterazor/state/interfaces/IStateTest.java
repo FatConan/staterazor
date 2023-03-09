@@ -8,7 +8,8 @@ import java.util.Objects;
 import static org.junit.Assert.assertNotEquals;
 
 public class IStateTest extends TestCase{
-    //A test state class that represents a class (this isn't the ideal way to do this, it'd be better to use an enum
+
+    /* This illustrates using a more complex class as a state rather than an enum */
     static class FooState implements IState{
         private final String name;
 
