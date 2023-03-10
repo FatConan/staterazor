@@ -9,7 +9,7 @@ import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
  * @param <M> The state machine class
  * @param <S> The state class
  * @param <E> The event class
- * @param <X> The vent context class
+ * @param <X> The event context class
  */
 public interface IInitialContext<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>{
     M getMachine();

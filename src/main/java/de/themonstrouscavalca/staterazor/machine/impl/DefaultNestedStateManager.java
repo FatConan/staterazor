@@ -20,6 +20,22 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * A default implementation of a state machine in which the states are also state machines.
+ * @param <MT> The top level state machine class
+ * @param <MS> The state machine acting as states for the top level
+ * @param <TT> The top level transitions
+ * @param <TS> The state level transitions
+ * @param <ST> The state manager of the state-level state machine
+ * @param <SS> The state class of the state-level state machine
+ * @param <CT> The top level transition scope class
+ * @param <CS> The state level transition scope class
+ * @param <E> The event class
+ * @param <X> The event context class
+ */
+/* TODO - This works for the requirements I had of a state machine system, but it is very limited, I would ideally
+like to make this into something more flexible that could accommodate multiple levels of state machine nesting. I can't
+quite see a path to that without things getting very messy at the moment, so this is where I'll stop for now */
 public class DefaultNestedStateManager<
         MT extends IStateMachine<ST, E, X>,
         MS extends IStateMachine<SS, E, X>,

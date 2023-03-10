@@ -5,6 +5,14 @@ import de.themonstrouscavalca.staterazor.events.interfaces.IEvent;
 import de.themonstrouscavalca.staterazor.machine.interfaces.IStateMachine;
 import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 
+
+/**
+ * A default implementation of an initial context representing a state machine at rest
+ * @param <M> The state machine class
+ * @param <S> The state class
+ * @param <E> The event class
+ * @param <X> The event context class
+ */
 public class InitialContext<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>
         implements IInitialContext<M, S, E, X>{
 

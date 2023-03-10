@@ -19,6 +19,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * A default implementation of a state machine, that holds all states, the definition of the machine itself, the transitions
+ * and gates and handles all of events in a standard way. This Default Machine can act as the basis of any state machine you wish to build
+ * unless you'd like to handle transitions in your own way in which case you can roll a state machine from scratch so long as it
+ * satisfies the interfaces.
+ * @param <M>
+ * @param <T>
+ * @param <C>
+ * @param <S>
+ * @param <E>
+ * @param <X>
+ */
 public class DefaultStateManager<M extends IStateMachine<S, E, X>,
         T extends ITransition<M, C, S, E, X>,
         C extends ITransitionScope,

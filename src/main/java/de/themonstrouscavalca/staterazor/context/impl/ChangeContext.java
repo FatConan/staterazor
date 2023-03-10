@@ -8,6 +8,14 @@ import de.themonstrouscavalca.staterazor.state.interfaces.IState;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransition;
 import de.themonstrouscavalca.staterazor.transition.interfaces.ITransitionScope;
 
+/**
+ * A default implementation of a ChangeContext tracking the changes as the result of a transition of a state machine.
+ * This covers the basics of tracking states and event context, but could be extended if you wanted to do more here.
+ * @param <M> The state machine class
+ * @param <S> The state class
+ * @param <E> The event class
+ * @param <X> The event context class
+ */
 public class ChangeContext<M extends IStateMachine<S, E, X>, S extends IState, E extends IEvent, X>
         extends InitialContext<M, S, E, X>
         implements IChangeContext<M, S, E, X>{
