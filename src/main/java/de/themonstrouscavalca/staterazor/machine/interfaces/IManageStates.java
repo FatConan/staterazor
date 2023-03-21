@@ -13,8 +13,8 @@ import java.util.List;
  * The IManageStates - Define an interface for handling changes to a state machine and for interrogating the state machine to
  * determine the available transitions.
  *
- * @param <M> Defines the state machine and extends IStateMachine<S, E, X>
- * @param <T> Defines the Transition and extends ITransition<M, C, S, E, X>
+ * @param <M> Defines the state machine and extends IStateMachine
+ * @param <T> Defines the Transition and extends ITransition
  * @param <C> Defines the TransitionScope and extends ITransitionScope
  *          A refinement to the transition that allows us to label them with a "scope" to refine when they're available
  * @param <S> Defines the state machine states and extends IState

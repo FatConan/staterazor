@@ -21,6 +21,7 @@ public class Transition<
     private static final String STATE_GENERATOR_ERROR = "This transition has been configured to use a dynamic to state generator, use getToState(event, context, eventContext)";
 
     private final String name;
+    private final String description;
     private final boolean internal;
     private final boolean dynamic;
     private final boolean multipleOrigin;
@@ -37,6 +38,7 @@ public class Transition<
             S extends IState,
             E extends IEvent, X>{
         private String name = "";
+        private String description = "";
 
         private boolean internal = false;
         private boolean multipleOrigin = false;
@@ -85,6 +87,10 @@ public class Transition<
             this.name = name;
             return this;
         }
+        public Builder<M, C, S, E, X> description(String description){
+            this.description = description;
+            return this;
+        }
         public Builder<M, C, S, E, X> on(E onEvent){
             this.event = onEvent;
             return this;
@@ -104,6 +110,7 @@ public class Transition<
 
     public Transition(Builder<M, C, S, E, X> builder){
         this.name = builder.name;
+        this.description = builder.description;
         this.scope = builder.scope;
         this.multipleOrigin = builder.multipleOrigin;
         this.dynamic = builder.dynamic;
@@ -119,6 +126,11 @@ public class Transition<
     @Override
     public String name(){
         return this.name;
+    }
+
+    @Override
+    public String description(){
+        return this.description;
     }
 
     @Override

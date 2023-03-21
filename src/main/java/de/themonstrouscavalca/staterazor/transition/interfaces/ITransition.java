@@ -15,6 +15,7 @@ public interface ITransition<
         E extends IEvent, X> extends Comparable<ITransition<M, C, S, E, X>>{
 
     String name();
+    String description();
     boolean isInternal();
     boolean isExternal();
     boolean isDynamic();
