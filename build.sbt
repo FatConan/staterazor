@@ -2,7 +2,7 @@ name := "staterazor"
 organization := "de.themonstrouscavalca"
 // maintainer := "oss@themonstrouscavalca.de"
 version := "2022.8.1-SNAPSHOT"
-scalaVersion := "2.13.8"
+scalaVersion := "2.13.12"
 
 
 resolvers ++= Seq(Resolver.mavenLocal,
@@ -13,15 +13,15 @@ resolvers ++= Seq(Resolver.mavenLocal,
     "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
 )
 
+val slf4jVersion = "1.7.36"
+
 libraryDependencies ++= Seq(
     "junit"                         % "junit"                   % "4.13.1"                  % Test,
     "com.novocode"                  % "junit-interface"         % "0.11"                    % Test,
-    "org.slf4j"                     % "slf4j-api"               % "1.7.32",
-    "org.slf4j"                     % "slf4j-simple"            % "1.7.32"
+    "org.slf4j"                     % "slf4j-api"               % slf4jVersion,
+    "org.slf4j"                     % "slf4j-simple"            % slf4jVersion
 )
 
-Compile / compile / logLevel := Level.Warn
 Test / test / logLevel := util.Level.Error
-// parallelExecution in Test := false
 logBuffered := false
 scalacOptions += "-deprecation"
